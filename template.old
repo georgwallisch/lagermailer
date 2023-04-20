@@ -1,0 +1,58 @@
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+    <style>
+    	html { font-family: sans-serif; }
+    	table, td, th { border: 1px solid #000; }
+    	table { border-collapse: collapse; }
+    	td, th { padding: 0.25em 0.5em; }
+    	.info { font-size: 80%; }
+    </style>    
+  </head>
+  <body>
+    <p>Hallo liebes Praxisteam,</p>
+    <p>dies ist eine automatisch erzeugte Übersicht über unsere aktuell
+      lagernden Antibiotika und Fiebermittel:</p>
+      
+   ###YIELD###
+   
+    <p>Bitte beachtet, dass die Lagermengen den aktuellen Bestand zum
+      Zeitpunkt dieser Nachricht angeben. Bei geringen Beständen bitte
+      ggf. telefonisch die tatsächliche Verfügbarkeit erfragen: Tel.
+      400331<br>
+    </p>
+    <p>Beste Grüße<br>
+      Eure Apotheke Schug</p>
+    <p><font size="2"><i>Solltet ihr diese automatische Nachricht nicht
+          mehr wünschen, bitte eine kurze Nachricht an
+          &lt;it@apotheke-schug.com&gt; schreiben.</i></font></p>
+    <pre class="moz-signature" cols="72">-- 
+Apotheke Schug
+Hauptstraße 64
+92670 Windischeschenbach 
+    
+Telefon: 0 96 81 / 40 03 31
+Telefax: 0 96 81 / 40 03 32
+
+E-Mail-Adresse:	windischeschenbach@apotheke-schug.com
+
+Filiale der
+
+Apotheke Schug e.K.
+Karlsplatz 10
+92676 Eschenbach i. d. OPf. 
+Registergericht: Amtsgericht Weiden i. d. OPf. 
+Handelsregisternummer: HRA 1434
+
+Umsatzsteuer-Id: DE 134 035 112
+
+Telefon: 0 96 45 / 92 15-0 
+Telefax: 0 96 45 / 92 15-30 
+E-Mail-Adresse: eschenbach@apotheke-schug.com
+
+Internet: www.schug-gruppe.de
+</pre>
+  </body>
+</html>

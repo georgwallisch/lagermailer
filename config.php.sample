@@ -1,0 +1,4 @@
+<?php
+	$csvpath = '/mnt/Apo/4549705/export';
+	#$csvs = array('Antibiotika-Säfte' => 'ab_saefte_lager.csv', 'Antibiotika (Tabletten)' => 'ab_fest_lager.csv', 'Fiebersäfte' => 'fiebersaefte_lager.csv' , 'Fieberzäpfchen' => 'fieberzaepfchen_lager.csv');
+?>
