@@ -12,6 +12,17 @@ DRYRUN=0
 VERSION="0.1 (20.04.2023)"
 CONFIGFILE=config.sh
 
+SUBJECT="Aktuelle Lagerliste Antibiotika/Fiebermittel"
+
+SCRIPT_PATH="${BASH_SOURCE}"
+while [ -L "${SCRIPT_PATH}" ]; do
+  SCRIPT_DIR="$(cd -P "$(dirname "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+  SCRIPT_PATH="$(readlink "${SCRIPT_PATH}")"
+  [[ ${SCRIPT_PATH} != /* ]] && SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_PATH}"
+done
+SCRIPT_PATH="$(readlink -f "${SCRIPT_PATH}")"
+SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+
 while (( "$#")); do
 	if [ $1 == "-v" ]; then
 		VERBOSE=1
@@ -51,6 +62,8 @@ PDF="Lagerliste_Apo_Schug_${STANDORT}"
 HTMLPATH=${TEMPDIR}/${HTML}.html
 PDFPATH2=${TEMPDIR}/${PDF}.pdf
 PDFPATH=${TEMPDIR}/${PDF}_neu!.pdf
+SENDPATH=${PDFPATH2}
+MAILTEMPLATE=$SCRIPT_DIR'/mail-template.html'
 
 
 if [ ! -d $TEMPDIR ]; then
@@ -98,7 +111,7 @@ if [ -f $PDFPATH2 ]; then
 	fi
 fi
 
-HTMLDATA=$('/home/pi/ab-mailer/prepare_html_list.php')
+HTMLDATA=$($SCRIPT_DIR'/prepare_html_list.php')
 
 if [ $? -eq 1 ]; then
     echo "ERROR preparing data:"
@@ -119,16 +132,34 @@ else
  	--footer-right "Seite [page] von [topage]" --footer-left "${TS}" --footer-line --footer-font-size 8 --footer-spacing 5 \
  	${HTMLPATH} ${PDFPATH}
  	
- 	if [ $? -eq 1 ]; then
+ 	if [ $? -gt 0 ]; then
  		echo "ERROR on creating $PDFPATH by wkhtmltopdf"
  	else
  		if [ ! -f $PDFPATH2 ]; then
 			cp $PDFPATH $PDFPATH2
 			if [ $? -eq 1 ]; then
 				echo "ERROR copying from $PDFPATH to $PDFPATH2"
-			elif [ $VERBOSE -eq 1 ]; then
-				echo "Successfully copied from $PDFPATH to $PDFPATH2"			
+				SENDPATH=${PDFPATH}
+			else
+				rm $PDFPATH
+				if [ $VERBOSE -eq 1 ]; then
+					echo "Successfully copied from $PDFPATH to $PDFPATH2"
+				fi
 			fi
 		fi
+		
+		for RECIPIENT in "${RECIPIENTS[@]}"; do
+			if [ $VERBOSE -eq 1 ]; then
+				echo -e "Sende Mail an ${RECIPIENT} ..\n"
+			fi
+
+			if [ $DRYRUN -eq 0 ]; then
+				cat $MAILTEMPLATE | s-nail -s "$SUBJECT" -r "$REPLYTO" -M "text/html" -a $SENDPATH $RECIPIENT
+			else
+				if [ $VERBOSE -eq 1 ]; then
+					echo "Dry run! Sende nichts!"
+				fi
+			fi
+		done		
 	fi	
 fi

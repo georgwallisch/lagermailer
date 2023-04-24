@@ -1,4 +1,6 @@
 TEMPDIR=/mnt/Apo/4549705/export
 STANDORT=WESB
 APONAME="Apotheke Schug Windischeschenbach"
-
+ERRORRECIPIENT="it@apotheke-schug.com"
+RECIPIENTS=("kemnath@apotheke-schug.com" "info@kinderarzt-kemnath.de")
+REPLYTO="kemnath@apotheke-schug.com"

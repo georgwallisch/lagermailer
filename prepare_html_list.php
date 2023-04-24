@@ -15,7 +15,17 @@
 	require_once 'bootstrap.php';
 		
 	// $bootstrap_config['inline'] = true;
-	$bootstrap_config['inline_css'] = 'html { font-size: 12pt; } .info { font-size: 70%; margin-bottom: 3em; } td.field-pck { text-align: right; } td.field-abda-wgr { font-size: 80%; } td.field-bestand { text-align: center; font-weight: bold; }';
+	$bootstrap_config['inline_css'] = <<<EOT
+	@media all {
+		html { font-size: 10pt; }
+		.info { font-size: 70%; margin-bottom: 3em; }
+		td.field-pck { text-align: right; }
+		td.field-abda-wgr { font-size: 80%; }
+		td.field-bestand { text-align: center; font-weight: bold; }
+		h1, h2, h3, h4, h5 { break-after: avoid; }
+	}	
+EOT;
+
 	$bootstrap_config['styles'] = array('css');
 	$bootstrap_config['scripts'] = array('jquery_js', 'js');
 	
