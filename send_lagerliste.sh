@@ -34,7 +34,6 @@ while (( "$#")); do
 	
 	if [ "$1" == "--debug" ]; then
 		DEBUG=1
-		RECIPIENTS=("${ERRORRECIPIENT}")
 	fi
 	
 	if [ "$1" == "--dry" ]; then
@@ -54,6 +53,10 @@ if [ -x $CONFIGFILE ]; then
 	if [ $VERBOSE -gt 0 ]; then
 		echo "Using config file ${CONFIGFILE}";
 	fi
+fi
+
+if [ $DEBUG -eq 1 ]; then	
+	RECIPIENTS=("${ERRORRECIPIENT}")
 fi
 
 TITLE="Lagerliste ${APONAME}"
