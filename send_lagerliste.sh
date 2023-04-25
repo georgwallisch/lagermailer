@@ -22,6 +22,7 @@ while [ -L "${SCRIPT_PATH}" ]; do
 done
 SCRIPT_PATH="$(readlink -f "${SCRIPT_PATH}")"
 SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+CONFIGPATH=${SCRIPT_DIR}/${CONFIGFILE}
 
 while (( "$#")); do
 	if [ $1 == "-v" ]; then
@@ -47,8 +48,8 @@ if [ $VERBOSE -eq 1 ]; then
 	echo -e "\n*** Lagerlisten-Mailer ${VERSION} ***\n\n"
 fi
 
-if [ -x $CONFIGFILE ]; then
-	source $CONFIGFILE
+if [ -x $CONFIGPATH ]; then
+	source $CONFIGPATH
 
 	if [ $VERBOSE -gt 0 ]; then
 		echo "Using config file ${CONFIGFILE}";
@@ -68,17 +69,17 @@ PDFPATH=${TEMPDIR}/${PDF}_neu!.pdf
 SENDPATH=${PDFPATH2}
 MAILTEMPLATE=$SCRIPT_DIR'/mail-template.html'
 
-
-if [ ! -d $TEMPDIR ]; then
-		echo "ERROR: Temp Dir does not exist ${TEMPDIR} !"
-		exit 1
-fi
-
 if [ $VERBOSE -eq 1 ]; then
+	echo "Script Dir is determined to ${SCRIPT_DIR}"
 	echo "Creating ${HTML} for ${APONAME} in ${STANDORT}"
 	echo "HTML file path is set to ${HTMLPATH}"
 	echo "PDF file path is set to ${PDFPATH}"
 	echo "PDF2 file path is set to ${PDFPATH2}"
+fi
+
+if [ ! -d $TEMPDIR ]; then
+		echo "ERROR: Temp Dir does not exist ${TEMPDIR} !"
+		exit 1
 fi
 
 if [ -f $HTMLPATH ]; then
