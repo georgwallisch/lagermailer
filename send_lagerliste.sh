@@ -24,6 +24,14 @@ SCRIPT_PATH="$(readlink -f "${SCRIPT_PATH}")"
 SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 CONFIGPATH=${SCRIPT_DIR}/${CONFIGFILE}
 
+SUFFIX=_neu!
+
+TEMPDIR=/media/usbstick/temp
+
+if [ ! -d "$TEMPDIR" ]; then
+	TEMPDIR=/tmp
+fi
+
 while (( "$#")); do
 	if [ $1 == "-v" ]; then
 		VERBOSE=1
@@ -60,13 +68,27 @@ if [ $DEBUG -eq 1 ]; then
 	RECIPIENTS=("${ERRORRECIPIENT}")
 fi
 
+if [ -z "$HTMLDIR" ]; then
+	HTMLDIR=$TEMPDIR
+fi
+
+if [ -z "$FINALDIR" ]; then
+	FINALDIR=$HTMLDIR
+fi
+
 TITLE="Lagerliste ${APONAME}"
 HTML=lagerliste
 PDF="Lagerliste_Apo_Schug_${STANDORT}"
-HTMLPATH=${TEMPDIR}/${HTML}.html
-PDFPATH2=${TEMPDIR}/${PDF}.pdf
-PDFPATH=${TEMPDIR}/${PDF}_neu!.pdf
-SENDPATH=${PDFPATH2}
+HTMLPATH=${HTMLDIR}/${HTML}.html
+
+PDFPATH=${TEMPDIR}/${PDF}.pdf
+PDFPATH2=${FINALDIR}/${PDF}.pdf
+PDFPATH3=${FINALDIR}/${PDF}${SUFFIX}.pdf
+
+if [ -z "$SENDPATH" ]; then
+	SENDPATH=$PDFPATH
+fi
+
 MAILTEMPLATE=$SCRIPT_DIR'/mail-template.html'
 
 if [ $VERBOSE -eq 1 ]; then
@@ -81,6 +103,17 @@ if [ ! -d $TEMPDIR ]; then
 		echo "ERROR: Temp Dir does not exist ${TEMPDIR} !"
 		exit 1
 fi
+
+if [ ! -d $HTMLDIR ]; then
+		echo "ERROR: HTML Dir does not exist ${HTMLDIR} !"
+		exit 1
+fi
+
+if [ ! -d $FINALDIR ]; then
+		echo "ERROR: FINAL Dir does not exist ${FINALDIR} !"
+		exit 1
+fi
+
 
 if [ -f $HTMLPATH ]; then
 	rm $HTMLPATH
@@ -115,6 +148,16 @@ if [ -f $PDFPATH2 ]; then
 	fi
 fi
 
+if [ -f $PDFPATH3 ]; then
+	rm $PDFPATH3
+
+	if [ -f $PDFPATH3 ]; then
+		echo "WARNING: Cannot remove old ${PDFPATH3} !"		
+	elif [ $VERBOSE -eq 1 ]; then
+		echo "Successfully removed old ${PDFPATH3}"
+	fi
+fi
+
 HTMLDATA=$($SCRIPT_DIR'/prepare_html_list.php')
 
 if [ $? -eq 1 ]; then
@@ -142,12 +185,19 @@ else
  		if [ ! -f $PDFPATH2 ]; then
 			cp $PDFPATH $PDFPATH2
 			if [ $? -eq 1 ]; then
-				echo "ERROR copying from $PDFPATH to $PDFPATH2"
-				SENDPATH=${PDFPATH}
+				echo "ERROR copying from $PDFPATH to $PDFPATH2"				
 			else
-				rm $PDFPATH
 				if [ $VERBOSE -eq 1 ]; then
 					echo "Successfully copied from $PDFPATH to $PDFPATH2"
+				fi
+			fi
+		else
+			cp $PDFPATH $PDFPATH3
+			if [ $? -eq 1 ]; then
+				echo "ERROR copying from $PDFPATH to $PDFPATH3"				
+			else
+				if [ $VERBOSE -eq 1 ]; then
+					echo "Successfully copied from $PDFPATH to $PDFPATH3"
 				fi
 			fi
 		fi
