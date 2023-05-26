@@ -1,4 +1,5 @@
-HTMLDIR=/mnt/Apo/4549705/export
+MOUNTDIR=/mnt/Apo/4549705
+HTMLDIR=$MOUNTDIR/export
 STANDORT=WESB
 APONAME="Apotheke Schug Windischeschenbach"
 ERRORRECIPIENT="it@apotheke-schug.com"
