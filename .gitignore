@@ -1,6 +1,6 @@
 *~
 *#
-config.sh
-config.php
+config*.sh
+config*.php
 mail-template.html
 

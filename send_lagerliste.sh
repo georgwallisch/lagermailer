@@ -37,6 +37,13 @@ while (( "$#")); do
 		VERBOSE=1
 	fi
 	
+	if [ $1 == "-c" ]; then
+		shift
+		LOCALCONFIG=$1
+		LOCALCONFIGFILE=config-${LOCALCONFIG}.sh
+		LOCALCONFIGPATH=${SCRIPT_DIR}/${LOCALCONFIGFILE}		
+	fi
+	
 	if [ "$1" == "--verbose" ]; then
 		VERBOSE=1
 	fi
@@ -61,6 +68,14 @@ if [ -x $CONFIGPATH ]; then
 
 	if [ $VERBOSE -gt 0 ]; then
 		echo "Using config file ${CONFIGFILE}";
+	fi
+fi
+
+if [ -x $LOCALCONFIGPATH ]; then
+	source $LOCALCONFIGPATH
+
+	if [ $VERBOSE -gt 0 ]; then
+		echo "Using LOCAL config file ${LOCALCONFIGFILE}";
 	fi
 fi
 
@@ -189,7 +204,11 @@ if [ -f $PDFPATH3 ]; then
 	fi
 fi
 
-HTMLDATA=$($SCRIPT_DIR'/prepare_html_list.php')
+if [ -z $LOCALCONFIG ]; then
+	HTMLDATA=$($SCRIPT_DIR'/prepare_html_list.php')
+else
+	HTMLDATA=$($SCRIPT_DIR'/prepare_html_list.php' "$LOCALCONFIG")
+fi
 
 if [ $? -eq 1 ]; then
     echo "ERROR preparing data:"

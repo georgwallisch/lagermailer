@@ -30,6 +30,9 @@ EOT;
 	$bootstrap_config['scripts'] = array('jquery_js', 'js');
 	
 	include 'config.php';
+	if($argc > 1 and isset($argv[1])) {
+		include 'config-'.trim($argv[1]).'.php';
+	}	
 	
 	### DEPENDING PARAMS ###
 	$tdclasses = array();
