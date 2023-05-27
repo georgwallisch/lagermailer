@@ -99,31 +99,37 @@ if [ $VERBOSE -eq 1 ]; then
 	echo "PDF2 file path is set to ${PDFPATH2}"
 fi
 
-if [ -d $MOUNTDIR ]; then
-	if [ $VERBOSE -eq 1 ]; then
-		echo "Mount dir is set to ${MOUNTDIR}"
-	fi
-	
-	if [ -z "$(grep $MOUNTDIR /proc/mounts)" ]; then
+if [ ! -z $MOUNTDIR ]; then
+	if [ -d $MOUNTDIR ]; then
 		if [ $VERBOSE -eq 1 ]; then
-			echo "Mount dir seems not to be mounted!"
-			echo "Try to mount $MOUNTDIR .."
+			echo "Mount dir is set to ${MOUNTDIR}"
 		fi
-		mount $MOUNTDIR
-		if [ $? -eq 1 ]; then
-			echo "ERROR mounting $MOUNTDIR !"				
+		
+		if [ -z "$(grep $MOUNTDIR /proc/mounts)" ]; then
+			if [ $VERBOSE -eq 1 ]; then
+				echo "Mount dir seems not to be mounted!"
+				echo "Try to mount $MOUNTDIR .."
+			fi
+			mount $MOUNTDIR
+			if [ $? -eq 1 ]; then
+				echo "ERROR mounting $MOUNTDIR !"				
+			else
+				if [ $VERBOSE -eq 1 ]; then
+					echo "Successfully mounted $MOUNTDIR"
+				fi
+			fi
 		else
 			if [ $VERBOSE -eq 1 ]; then
-				echo "Successfully mounted $MOUNTDIR"
+				echo "Mount dir seems to be mounted correctly"
 			fi
 		fi
 	else
 		if [ $VERBOSE -eq 1 ]; then
-			echo "Mount dir seems to be mounted correctly"
+			echo "Mount dir seems to be valid dir: $MOUNTDIR"
 		fi
 	fi
 fi
-
+	
 if [ ! -d $TEMPDIR ]; then
 		echo "ERROR: Temp Dir does not exist ${TEMPDIR} !"
 		exit 1
