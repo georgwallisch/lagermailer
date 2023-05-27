@@ -41,7 +41,9 @@ while (( "$#")); do
 		shift
 		LOCALCONFIG=$1
 		LOCALCONFIGFILE=config-${LOCALCONFIG}.sh
-		LOCALCONFIGPATH=${SCRIPT_DIR}/${LOCALCONFIGFILE}		
+		LOCALCONFIGPATH=${SCRIPT_DIR}/${LOCALCONFIGFILE}
+		LOCALMAILTEMPLATE=${SCRIPT_DIR}/mail-template-${LOCALCONFIG}.html
+
 	fi
 	
 	if [ "$1" == "--verbose" ]; then
@@ -105,6 +107,10 @@ if [ -z "$SENDPATH" ]; then
 fi
 
 MAILTEMPLATE=$SCRIPT_DIR'/mail-template.html'
+
+if [ -r "$LOCALMAILTEMPLATE" ]; then
+	MAILTEMPLATE=$LOCALMAILTEMPLATE
+fi
 
 if [ $VERBOSE -eq 1 ]; then
 	echo "Script Dir is determined to ${SCRIPT_DIR}"
