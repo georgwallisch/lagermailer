@@ -9,7 +9,7 @@ DEBUG=0
 VERBOSE=0
 DRYRUN=0
 
-VERSION="0.1 (20.04.2023)"
+VERSION="0.3 (09.06.2023)"
 CONFIGFILE=config.sh
 
 SUBJECT="Aktuelle Lagerliste Antibiotika/Fiebermittel"
@@ -73,11 +73,17 @@ if [ -x $CONFIGPATH ]; then
 	fi
 fi
 
-if [ -x $LOCALCONFIGPATH ]; then
-	source $LOCALCONFIGPATH
-
-	if [ $VERBOSE -gt 0 ]; then
-		echo "Using LOCAL config file ${LOCALCONFIGFILE}";
+if [ ! -z $LOCALCONFIG ]; then
+	if [ -x $LOCALCONFIGPATH ]; then
+		source $LOCALCONFIGPATH
+	
+		if [ $VERBOSE -gt 0 ]; then
+			echo "Using LOCAL config file ${LOCALCONFIGFILE}";
+		fi
+	else
+		if [ $VERBOSE -gt 0 ]; then
+			echo "Using LOCAL config path does not exist: ${LOCALCONFIGPATH}";
+		fi
 	fi
 fi
 
