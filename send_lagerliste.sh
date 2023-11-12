@@ -69,7 +69,7 @@ if [ -x $CONFIGPATH ]; then
 	source $CONFIGPATH
 
 	if [ $VERBOSE -gt 0 ]; then
-		echo "Using config file ${CONFIGFILE}";
+		echo "Using config file ${CONFIGFILE}"
 	fi
 fi
 
@@ -78,12 +78,13 @@ if [ ! -z $LOCALCONFIG ]; then
 		source $LOCALCONFIGPATH
 	
 		if [ $VERBOSE -gt 0 ]; then
-			echo "Using LOCAL config file ${LOCALCONFIGFILE}";
+			echo "Using LOCAL config file ${LOCALCONFIGFILE}"
 		fi
 	else
-		if [ $VERBOSE -gt 0 ]; then
-			echo "Using LOCAL config path does not exist: ${LOCALCONFIGPATH}";
-		fi
+		echo "Local config path does not exist: ${LOCALCONFIGPATH}"
+		echo "ERROR: Config set ${LOCALCONFIG} not found!"
+		echo "Exiting.."
+		exit 1
 	fi
 fi
 
