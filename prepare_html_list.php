@@ -18,11 +18,14 @@
 	$bootstrap_config['inline_css'] = <<<EOT
 	@media all {
 		html { font-size: 10pt; }
+		body *, .table * { color: #000; }
 		.info { font-size: 70%; margin-bottom: 3em; }
 		td.field-pck { text-align: right; }
 		td.field-abda-wgr { font-size: 80%; }
 		td.field-bestand { text-align: center; font-weight: bold; }
 		h1, h2, h3, h4, h5 { break-after: avoid; }
+		.table thead th, .table td { border-top: 1px solid #aaa; }
+		.table thead th { border-bottom: 2px solid #aaa; }
 	}	
 EOT;
 
